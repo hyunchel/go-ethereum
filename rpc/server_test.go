@@ -63,6 +63,7 @@ func TestServer(t *testing.T) {
 		path := filepath.Join("testdata", f.Name())
 		name := strings.TrimSuffix(f.Name(), filepath.Ext(f.Name()))
 		t.Run(name, func(t *testing.T) {
+            t.Logf("Running test for the file %q", path)
 			runTestScript(t, path)
 		})
 	}
@@ -87,6 +88,7 @@ func runTestScript(t *testing.T, file string) {
 			// skip comments, blank lines
 			continue
 		case strings.HasPrefix(line, "--> "):
+            // "given input"
 			t.Log(line)
 			// write to connection
 			clientConn.SetWriteDeadline(time.Now().Add(5 * time.Second))
@@ -94,6 +96,7 @@ func runTestScript(t *testing.T, file string) {
 				t.Fatalf("write error: %v", err)
 			}
 		case strings.HasPrefix(line, "<-- "):
+            // "expected output"
 			t.Log(line)
 			want := line[4:]
 			// read line from connection and compare text

@@ -75,6 +75,7 @@ func ValidateTransaction(tx *types.Transaction, head *types.Header, signer types
 	if tx.Value().Sign() < 0 {
 		return ErrNegativeValue
 	}
+	// XXX: there is a limit to a gas?
 	// Ensure the transaction doesn't exceed the current block limit gas
 	if head.GasLimit < tx.Gas() {
 		return ErrGasLimit

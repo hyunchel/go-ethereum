@@ -673,6 +673,7 @@ func (pool *LegacyPool) add(tx *types.Transaction, local bool) (replaced bool, e
 	// already validated by this point
 	from, _ := types.Sender(pool.signer, tx)
 
+	// XXX: exclusivity??
 	// If the address is not yet known, request exclusivity to track the account
 	// only by this subpool until all transactions are evicted
 	var (
@@ -801,6 +802,7 @@ func (pool *LegacyPool) add(tx *types.Transaction, local bool) (replaced bool, e
 	return replaced, nil
 }
 
+// XXX: what is nonce gap. why is this related to being "executable" or not?
 // isGapped reports whether the given transaction is immediately executable.
 func (pool *LegacyPool) isGapped(from common.Address, tx *types.Transaction) bool {
 	// Short circuit if transaction falls within the scope of the pending list
@@ -993,6 +995,7 @@ func (pool *LegacyPool) Add(txs []*types.Transaction, local, sync bool) []error 
 	newErrs, dirtyAddrs := pool.addTxsLocked(news, local)
 	pool.mu.Unlock()
 
+	// XXX: ????
 	var nilSlot = 0
 	for _, err := range newErrs {
 		for errs[nilSlot] != nil {

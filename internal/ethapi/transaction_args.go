@@ -284,6 +284,7 @@ func (args *TransactionArgs) ToMessage(globalGasCap uint64, baseFee *big.Int) (*
 func (args *TransactionArgs) toTransaction() *types.Transaction {
 	var data types.TxData
 	switch {
+	// XXX: there is a case when MaxFeePerGas is nil?
 	case args.MaxFeePerGas != nil:
 		al := types.AccessList{}
 		if args.AccessList != nil {

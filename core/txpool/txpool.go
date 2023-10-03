@@ -290,6 +290,7 @@ func (p *TxPool) Add(txs []*types.Transaction, local bool, sync bool) []error {
 	for i := 0; i < len(p.subpools); i++ {
 		errsets[i] = p.subpools[i].Add(txsets[i], local, sync)
 	}
+	log.Info("errsets??", "errsets", errsets)
 	errs := make([]error, len(txs))
 	for i, split := range splits {
 		// If the transaction was rejected by all subpools, mark it unsupported
@@ -297,6 +298,7 @@ func (p *TxPool) Add(txs []*types.Transaction, local bool, sync bool) []error {
 			errs[i] = core.ErrTxTypeNotSupported
 			continue
 		}
+		// XXX: first one is not always an error, no?
 		// Find which subpool handled it and pull in the corresponding error
 		errs[i] = errsets[split][0]
 		errsets[split] = errsets[split][1:]

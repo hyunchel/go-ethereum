@@ -1893,6 +1893,7 @@ func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
 // transaction pool.
 func (s *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
+	log.Info("Sending a transaction!", "from", args.from().String(), "to", args.To.String())
 	// Look up the wallet containing the requested signer
 	account := accounts.Account{Address: args.from()}
 
