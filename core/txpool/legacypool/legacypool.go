@@ -997,7 +997,8 @@ func (pool *LegacyPool) Add(txs []*types.Transaction, local, sync bool) []error 
 	newErrs, dirtyAddrs := pool.addTxsLocked(news, local)
 	pool.mu.Unlock()
 
-	// XXX: ????
+	// Set new errors to the original slice where there were no errors before
+	log.Trace("errors", "newErrs", newErrs, "errs", errs)
 	var nilSlot = 0
 	for _, err := range newErrs {
 		for errs[nilSlot] != nil {
@@ -1006,6 +1007,7 @@ func (pool *LegacyPool) Add(txs []*types.Transaction, local, sync bool) []error 
 		errs[nilSlot] = err
 		nilSlot++
 	}
+	log.Trace("errors", "newErrs", newErrs, "errs", errs)
 	// Reorg the pool internals if needed and return
 	done := pool.requestPromoteExecutables(dirtyAddrs)
 	if sync {

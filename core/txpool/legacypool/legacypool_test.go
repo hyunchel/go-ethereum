@@ -37,6 +37,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/trie"
 )
@@ -265,6 +266,7 @@ func (c *testChain) State() (*state.StateDB, error) {
 // state reset and tests whether the pending state is in sync with the
 // block head event that initiated the resetState().
 func TestStateChangeDuringReset(t *testing.T) {
+	log.Root().SetHandler(log.StdoutHandler)
 	t.Parallel()
 
 	var (
@@ -305,6 +307,8 @@ func TestStateChangeDuringReset(t *testing.T) {
 	if nonce != 2 {
 		t.Fatalf("Invalid nonce, want 2, got %d", nonce)
 	}
+
+	t.Fatal("fiil")
 }
 
 func testAddBalance(pool *LegacyPool, addr common.Address, amount *big.Int) {
